@@ -1,0 +1,19 @@
+version: '2.3'
+
+services:
+  script:
+    build: .
+    runtime: nvidia  # Add this line to enable NVIDIA runtime
+    devices:  # Add this block to specify the GPU devices to use
+      - /dev/nvidia0:/dev/nvidia0
+    volumes:
+      - ./app:/home/tensorflow/app
+      - ./input:/home/tensorflow/input
+      - ./run.py:/home/tensorflow/run.py
+      - ./splitter.py:/home/tensorflow/splitter.py
+    ports:
+      - 6007:6007
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: "python -u run.py"
+    # command: "python -u splitter.py"
